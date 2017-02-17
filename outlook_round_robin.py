@@ -186,8 +186,8 @@ def process_messages(start_index, access_token):
 
         if forward_message(message['id'], forward_name, forward_email, access_token):
             mark_message_as_read(message['id'], access_token)
-        
-        stop_index = (stop_index + 1) % len(settings.FORWARD_TO)
+            stop_index = (stop_index + 1) % len(settings.FORWARD_TO)
+
         sleep(0.25)
 
     return stop_index

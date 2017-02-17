@@ -261,10 +261,10 @@ def test_process_messages_forward_error(load_mock, forward_mock, mark_mock, sett
 
     stop_index = process_messages(0, 'access_token')
 
-    assert stop_index == 1
+    assert stop_index == 0
     forward_mock.assert_has_calls([
         call('1', 'Bender', 'bender@planetexpress.com', 'access_token'),
-        call('2', 'Zoidberg', 'zoidberg@planetexpress.com', 'access_token'),
+        call('2', 'Bender', 'bender@planetexpress.com', 'access_token'),
         call('3', 'Bender', 'bender@planetexpress.com', 'access_token'),
     ])
     assert mark_mock.called is False 
