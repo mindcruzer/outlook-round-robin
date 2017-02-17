@@ -36,7 +36,7 @@ def store_index(index):
     Stores an integer in the file at `DATA_FILE_PATH`.
     """
     try:
-        with open(settings.DATA_FILE_PATH, 'w') as data_file:
+        with open(settings.INDEX_FILE_PATH, 'w') as data_file:
             data_file.write('{}\n'.format(index))
     except:
         pass
@@ -49,7 +49,7 @@ def load_index():
     Returns the value in the file, if the file is read successfully; 0 otherwise.
     """
     try:
-        with open(settings.DATA_FILE_PATH, 'r') as data_file:
+        with open(settings.INDEX_FILE_PATH, 'r') as data_file:
             return int(data_file.readline())
     except:
         return 0
@@ -95,6 +95,7 @@ def mark_message_as_read(message_id, access_token):
 
     if response.status_code == 200:
         logger.info('Message successfully updated.')
+        return True
     else:
         data = response.json()
         logger.error('Error updating message: {}'.format(data['error']['message']))
@@ -170,10 +171,10 @@ def process_messages(start_index, access_token):
     Returns the next index in `FORWARD_TO` that should be used.
     """
     got_messages, messages = load_messages(access_token)
-        
+
     if not got_messages:
         return start_index
-
+    
     stop_index = start_index
 
     for message in messages:

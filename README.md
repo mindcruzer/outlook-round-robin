@@ -32,8 +32,7 @@ following *Application* permissions:
 - Read and write mail in all mailboxes
 - Send mail as any user
 
-Once that's done, rename `settings.py.example` to `settings.py` and add the following values from your 
-application registration to `settings.py`:
+Once that's done, add the following values from your application registration to `settings.py`:
 - `TOKEN_PROVIDER_ENDPOINT = "[Your app's OAuth 2.0 token endpoint]"`
 - `CLIENT_ID = "[Application ID]"`
 - `CLIENT_SECRET = "[The secret you created for the application]"`
@@ -51,11 +50,19 @@ if forward_message(message['id'], forward_name, forward_email, access_token):
 ... and comment them out. Run the script, view the log output to make sure everything looks good, then uncomment and do it live. 
 That being said, this script doesn't do anything descructive, so don't be too paranoid.
 
+## Test
+
+```
+$ cd out
+$ pip3 install -r test/requirements.txt
+$ python3 -m pytest
+```
+
 ## Deployment
 
-Ok so now your script works but how do you deploy it? That's mostly up to you. What *I* did was fire up a `t2.nano` on AWS and set the script 
-up as a systemd service. Here is a sample systemd service file that you might use to run this script in the background. It will automatically 
-start the script at boot, and restart it if the process crashes. 
+This is mostly up to you. What *I* did was fire up a `t2.nano` on AWS and set the script up as a systemd service. Here is a sample systemd 
+service file that you might use to run this script in the background. It will automatically start the script at boot, and restart it if the 
+process crashes. 
 
 ```
 [Unit]

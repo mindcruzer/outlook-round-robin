@@ -1,19 +1,19 @@
 
 # The token provider endpoint for your Azure AD tenant.
 #
-TOKEN_PROVIDER_ENDPOINT = ''
+TOKEN_PROVIDER_ENDPOINT = 'https://login.windows.net/00000000-0000-0000-0000-000000000000/oauth2/token'
 
 # The application ID from Azure.
 #
-CLIENT_ID = ''
+CLIENT_ID = 'app_id'
 
 # The application secret from Azure.
 #
-CLIENT_SECRET = ''
+CLIENT_SECRET = 'app_secret'
 
 # The Azure AD user who's mailbox to watch.
 #
-MAILBOX_USER = 'professor@year3000.com'
+MAILBOX_USER = 'mailbox@planetexpress.com'
 
 # The folder to watch for messages to forward.
 #
@@ -24,8 +24,8 @@ WATCH_FOLDER = 'Inbox'
 # message to the second person in the list, etc.
 #
 FORWARD_TO = [
-    ('Bender Bending Rodriguez', 'bender@year3000.com'),
-    ('Zoidberg', 'zoidberg@year3000.com'),
+    ('Bender Bending Rodriguez', 'bender@planetexpress.com'),
+    ('Zoidberg', 'zoidberg@planetexpress.com'),
 ]
 
 # How many unread messages to load from `WATCH_FOLDER` each time it is checked. Set this 
@@ -43,11 +43,11 @@ POLL_INTERVAL = 5
 # This file stores who should receive the next message from `WATCH_FOLDER`. This allows
 # messages to be evenly distributed across `FORWARD_TO`, even in the event of a restart.
 #
-DATA_FILE_PATH = 'index.dat'
+INDEX_FILE_PATH = 'index.dat'
 
 # The path to the log file. Set this to None to print logs to stdout.
 # 
-LOG_FILE_PATH = 'logs/forwarding.log'
+LOG_FILE_PATH = None
 
 # For how many days should logs be kept?
 #
