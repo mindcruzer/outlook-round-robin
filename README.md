@@ -85,4 +85,5 @@ $ systemd restart outlook_round_robin.service
 I also integrated the log files with CloudWatch to notify me of errors, but I'm too lazy to write about it. I'm sure you can figure it out.
 
 ## Notes
+- You do *not* want an unauthorized person getting access to `CLIENT_ID` and `CLIENT_SECERET`, so secure your server.
 - You probably don't run more than one instance of this script on a mailbox folder.
