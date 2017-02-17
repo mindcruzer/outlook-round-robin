@@ -28,7 +28,7 @@ FORWARD_TO = [
     ('Zoidberg', 'zoidberg@year3000.com'),
 ]
 
-# How many messages to load from `WAtCH_FOLDER` each time it is checked. Set this 
+# How many unread messages to load from `WATCH_FOLDER` each time it is checked. Set this 
 # to something reasonably high so that no messages are skipped.
 # 
 # ex. `LOAD_MESSAGE_COUNT = 5` would load the 5 newest messages from `WATCH_FOLDER`.
@@ -40,8 +40,8 @@ LOAD_MESSAGE_COUNT = 250
 #
 POLL_INTERVAL = 5
 
-# This file will store who the last message was forwarded to on the last check of the 
-# `WATCH_FOLDER`. This allows the emails to remain evenly distributed across restarts. 
+# This file stores who should receive the next message from `WATCH_FOLDER`. This allows
+# messages to be evenly distributed across `FORWARD_TO`, even in the event of a restart.
 #
 DATA_FILE_PATH = 'index.dat'
 
