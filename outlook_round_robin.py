@@ -103,7 +103,7 @@ def mark_message_as_read(message_id, access_token):
 
 def forward_message(message_id, recipient_name, recipient_email, access_token):
     """
-    Forwards a message to recipient.
+    Forwards a message to a recipient.
 
     Returns True on success; False otherwise.
     """
@@ -164,8 +164,8 @@ def load_messages(access_token):
 
 def process_messages(start_index, access_token):
     """
-    Moves any messages in the Inbox of `MAILBOX_USER` and forwards them
-    to the addresses in `FORWARD_TO` in a round-robin fashion.
+    Forwards unread messages to the list of users in `FORWARD_TO`. Forwarded messages 
+    are then marked as read. 
 
     Returns the next index in `FORWARD_TO` that should be used.
     """

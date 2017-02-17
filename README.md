@@ -26,7 +26,11 @@ original Azure Active Directory authentication endpoint is used, which means thi
 school accounts, not personal accounts.
 
 The first thing you need to do is register an application with Azure AD. You can find the details of that [here](https://graph.microsoft.io/en-us/docs/authorization/app_only) 
-under the `Register the application in Azure Active Directory` section. 
+under the `Register the application in Azure Active Directory` section. For permissions, select the `Microsoft Graph` API, and choose the 
+following *Application* permissions:
+- Read mail in all mailboxes
+- Read and write mail in all mailboxes
+- Send mail as any user
 
 Once that's done, rename `settings.py.example` to `settings.py` and add the following values from your 
 application registration to `settings.py`:
@@ -63,7 +67,7 @@ User=ubuntu
 Group=ubuntu
 Type=idle
 Restart=always
-WorkingDirectory=/home/ubuntu
+WorkingDirectory=/home/ubuntu/outlook-round-robin
 ExecStart=/usr/bin/python3 /home/ubuntu/outlook-round-robin/outlook_round_robin.py
 
 [Install]
@@ -81,8 +85,4 @@ $ systemd restart outlook_round_robin.service
 I also integrated the log files with CloudWatch to notify me of errors, but I'm too lazy to write about it. I'm sure you can figure it out.
 
 ## Notes
-
-You probably don't run more than one instance of this script on a mailbox folder.
-
-## License
-
+- You probably don't run more than one instance of this script on a mailbox folder.
