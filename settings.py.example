@@ -1,0 +1,58 @@
+
+# The token provider endpoint for your Azure AD tenant.
+#
+TOKEN_PROVIDER_ENDPOINT = ''
+
+# The application ID from Azure.
+#
+CLIENT_ID = ''
+
+# The application secret from Azure.
+#
+CLIENT_SECRET = ''
+
+# The Azure AD user who's mailbox to watch.
+#
+MAILBOX_USER = 'professor@year3000.com'
+
+# The folder to watch for messages to forward.
+#
+WATCH_FOLDER = 'Inbox'
+
+# Who to forward messages to. This will be round-robin, so the first message 
+# loaded from `WATCH_FOLDER` is forwarded to the first person in the list, second 
+# message to the second person in the list, etc.
+#
+FORWARD_TO = [
+    ('Bender Bending Rodriguez', 'bender@year3000.com'),
+    ('Zoidberg', 'zoidberg@year3000.com'),
+]
+
+# How many messages to load from `WAtCH_FOLDER` each time it is checked. Set this 
+# to something reasonably high so that no messages are skipped.
+# 
+# ex. `LOAD_MESSAGE_COUNT = 5` would load the 5 newest messages from `WATCH_FOLDER`.
+#
+LOAD_MESSAGE_COUNT = 250
+
+# How often (in minutes) do you want to check `WATCH_FOLDER` for messages?
+# Set this to something reasonable. Ideally >= 1 min.
+#
+POLL_INTERVAL = 5
+
+# This file will store who the last message was forwarded to on the last check of the 
+# `WATCH_FOLDER`. This allows the emails to remain evenly distributed across restarts. 
+#
+DATA_FILE_PATH = 'index.dat'
+
+# The path to the log file. Set this to None to print logs to stdout.
+# 
+LOG_FILE_PATH = 'logs/forwarding.log'
+
+# For how many days should logs be kept?
+#
+LOG_BACKUPS = 14
+
+LOG_LEVEL = 'INFO'
+LOG_FORMAT = '%(asctime)s|%(levelname)s|%(message)s'
+
