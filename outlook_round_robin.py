@@ -86,7 +86,7 @@ def mark_message_as_read(message_id, access_token):
 
     Returns True on success; False otherwise.
     """
-    logger.info('Making message as read...')
+    logger.info('Marking message as read...')
     logger.debug('Message id: {}'.format(message_id))
 
     response = requests.patch(API_ENDPOINT + '/users/{}/messages/{}'.format(settings.MAILBOX_USER, message_id), json={
