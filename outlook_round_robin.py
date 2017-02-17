@@ -89,7 +89,8 @@ def mark_message_as_read(message_id, access_token):
     logger.info('Marking message as read...')
     logger.debug('Message id: {}'.format(message_id))
 
-    response = requests.patch(API_ENDPOINT + '/users/{}/messages/{}'.format(settings.MAILBOX_USER, message_id), json={
+    endpoint = API_ENDPOINT + '/users/{}/messages/{}'.format(settings.MAILBOX_USER, message_id)
+    response = requests.patch(endpoint, json={
         'isRead': True
     }, auth=MSGraphAuth(access_token))
 
@@ -111,7 +112,8 @@ def forward_message(message_id, recipient_name, recipient_email, access_token):
     logger.info('Forwaring message to {}...'.format(recipient_email))
     logger.debug('Message id: {}'.format(message_id))
 
-    response = requests.post(API_ENDPOINT + '/users/{}/messages/{}/forward'.format(settings.MAILBOX_USER, message_id), json={
+    endpoint = API_ENDPOINT + '/users/{}/messages/{}/forward'.format(settings.MAILBOX_USER, message_id)
+    response = requests.post(endpoint, json={
         'comment': '',
         'toRecipients': [ 
             {
