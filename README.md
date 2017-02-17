@@ -53,7 +53,6 @@ That being said, this script doesn't do anything descructive, so don't be too pa
 ## Test
 
 ```
-$ cd out
 $ pip3 install -r test/requirements.txt
 $ python3 -m pytest
 ```
