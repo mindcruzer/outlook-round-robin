@@ -1,5 +1,4 @@
 # Outlook Round-Robin
-
 Watches a folder in a user's mailbox for messages, which are 
 forwarded to a list of recipients in a round-robin fashion.
 
@@ -7,20 +6,17 @@ forwarded to a list of recipients in a round-robin fashion.
 - Python 3
 
 ## How it works
-
 This script will check the configured mailbox folder for *unread* emails at whichever interval you choose. When it finds 
 some, it forwards them, round-robin, to a list of recipients. Once it has forwarded a message, it marks the message 
 as *read*. Take note of that last part. If you go into the mailbox and start clicking around new messages, effectively 
 marking them as read, the script will not forward them. 
 
 ## Y tho?
-
 Well, I have a client that uses a third-party service which reports customer orders to them via email, but the problem is all the 
 orders go to one mailbox, and volume is fairly high. Rather than paying someone to distribute the emails among a set of `n` employees, 
 or worse, having one person process all those orders, they explained their predicament to me and I made them this script. 
 
 ## Setup
-
 This uses the Microsoft Graph REST API to access the contents of a user's mailbox. For authentication, the 
 original Azure Active Directory authentication endpoint is used, which means this only works with work and 
 school accounts, not personal accounts.
@@ -51,14 +47,12 @@ if forward_message(message['id'], forward_name, forward_email, access_token):
 That being said, this script doesn't do anything destructive, so don't be too paranoid.
 
 ## Test
-
 ```
 $ pip3 install -r test/requirements.txt
 $ python3 -m pytest
 ```
 
 ## Deployment
-
 This is mostly up to you. What *I* did was fire up a `t2.nano` on AWS and set the script up as a systemd service. Here is a sample systemd 
 service file that you might use to run this script in the background. It will automatically start the script at boot, and restart it if the 
 process crashes. 
@@ -88,8 +82,17 @@ $ systemd daemon-reload
 $ systemd restart outlook_round_robin.service
 ```
 
-Another thing you'll probably want to do is get notified when errors occur. You can do this by adding a second [log handler that emails you](https://docs.python.org/3/library/logging.handlers.html#smtphandler)
-log messages. Alternatively, you could push the logs to CloudWatch, then configure alerts there.
+## Monitoring
+Another thing you'll probably want to do is get notified when errors occur. One way you can do this is by adding a second [log handler that emails you](https://docs.python.org/3/library/logging.handlers.html#smtphandler) log messages at a configured log level. This has one caveat: if the network goes 
+down for your server, you will never know (until someone realizes they're no longer receiving forwards).
+
+If you're on AWS, a better (and dirt cheap) solution is to push the logs to [CloudWatch](http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/QuickStartEC2Instance.html). You can configure a log metric, and an alarm for that metric. Note that you'll want two filters for your log metric: 
+- One matching `" ERROR "`, and a value of `1`
+- Another matching everything, and a value of `0`
+
+If you only configure the first filter your alarm will never leave the `INSUFFICIENT_DATA` state. With that in place, you'll want two notifications set up on your alarm: 
+- One for the `ALARM` state. If this state is reached, error(s) have been logged. 
+- One for the `INSUFFICIENT_DATA` state. If this state is reached, logs are no longer reaching CloudWatch, so something is likely wrong with your server.
 
 ## Notes
 - You do *not* want an unauthorized person getting access to `CLIENT_ID` and `CLIENT_SECERET`, so secure your server.
