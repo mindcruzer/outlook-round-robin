@@ -15,7 +15,7 @@ from outlook_round_robin import (
     mark_message_as_read,
     forward_message,
     load_messages,
-    process_messages
+    check_messages
 )
 
 
@@ -204,7 +204,7 @@ def test_process_messages(load_mock, forward_mock, mark_mock, settings_mock):
     forward_mock.return_value = True
     mark_mock.return_value = True
 
-    stop_index = process_messages(0, 'access_token')
+    stop_index = check_messages(0, 'access_token')
 
     assert stop_index == 1
     forward_mock.assert_has_calls([
@@ -235,7 +235,7 @@ def test_process_messages_error_loading_messages(load_mock, forward_mock, mark_m
     forward_mock.return_value = True
     mark_mock.return_value = True
 
-    stop_index = process_messages(0, 'access_token')
+    stop_index = check_messages(0, 'access_token')
 
     assert stop_index == 0
     assert forward_mock.called is False
@@ -259,7 +259,7 @@ def test_process_messages_forward_error(load_mock, forward_mock, mark_mock, sett
     forward_mock.return_value = False
     mark_mock.return_value = True
 
-    stop_index = process_messages(0, 'access_token')
+    stop_index = check_messages(0, 'access_token')
 
     assert stop_index == 0
     forward_mock.assert_has_calls([

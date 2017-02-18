@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 class MSGraphAuth(requests.auth.AuthBase):
     """
-    Adds the Microsoft Graph access token to a request.
+    Adds the access token to a request.
     """
     def __init__(self, access_token):
         self.access_token = access_token
@@ -71,7 +71,7 @@ def get_access_token():
     data = response.json()
 
     if response.status_code == 200:
-        logger.info('Got access token.')
+        logger.debug('Got access token.')
         expires_seconds = int(data['expires_in'])
         # set renewal time to 5 minutes before expiry, just to be safe
         return True, data['access_token'], datetime.now() + timedelta(seconds=expires_seconds - 300) 
@@ -86,8 +86,7 @@ def mark_message_as_read(message_id, access_token):
 
     Returns True on success; False otherwise.
     """
-    logger.info('Marking message as read...')
-    logger.debug('Message id: {}'.format(message_id))
+    logger.debug('Marking message {} as read...'.format(message_id))
 
     endpoint = API_ENDPOINT + '/users/{}/messages/{}'.format(settings.MAILBOX_USER, message_id)
     response = requests.patch(endpoint, json={
@@ -95,11 +94,11 @@ def mark_message_as_read(message_id, access_token):
     }, auth=MSGraphAuth(access_token))
 
     if response.status_code == 200:
-        logger.info('Message successfully updated.')
+        logger.debug('Message successfully updated.')
         return True
     else:
         data = response.json()
-        logger.error('Error updating message: {}'.format(data['error']['message']))
+        logger.error('Error updating message {}: {}'.format(message_id, data['error']['message']))
         return False
 
 
@@ -109,8 +108,7 @@ def forward_message(message_id, recipient_name, recipient_email, access_token):
 
     Returns True on success; False otherwise.
     """
-    logger.info('Forwaring message to {}...'.format(recipient_email))
-    logger.debug('Message id: {}'.format(message_id))
+    logger.debug('Forwaring message {} to {}...'.format(message_id, recipient_email))
 
     endpoint = API_ENDPOINT + '/users/{}/messages/{}/forward'.format(settings.MAILBOX_USER, message_id)
     response = requests.post(endpoint, json={
@@ -126,11 +124,11 @@ def forward_message(message_id, recipient_name, recipient_email, access_token):
     }, auth=MSGraphAuth(access_token))
 
     if response.status_code == 202:
-        logger.info('Message successfully forwarded.')
+        logger.debug('Message successfully forwarded.')
         return True
     else:
         data = response.json()
-        logger.error('Error forwarding message: {}'.format(data['error']['message']))
+        logger.error('Error forwarding message {}: {}'.format(message_id, data['error']['message']))
         return False
 
 
@@ -141,7 +139,7 @@ def load_messages(access_token):
 
     Returns (True, messages) on success; (False, []) otherwise.
     """
-    logger.info('Getting {} newest messages from {}\'s {} folder...'.format(
+    logger.debug('Getting {} newest messages from {}\'s {} folder...'.format(
         settings.LOAD_MESSAGE_COUNT,
         settings.MAILBOX_USER, 
         settings.WATCH_FOLDER
@@ -158,14 +156,14 @@ def load_messages(access_token):
 
     if response.status_code == 200:
         messages = data['value']
-        logger.info('Loaded {} messages from inbox.'.format(len(messages)))
+        logger.debug('Loaded {} messages from inbox.'.format(len(messages)))
         return True, messages
     else:
         logger.error('Error getting messages: {}'.format(data['error']['message']))
         return False, []
 
 
-def process_messages(start_index, access_token):
+def check_messages(start_index, access_token):
     """
     Forwards unread messages to the list of users in `FORWARD_TO`. Forwarded messages 
     are then marked as read. 
@@ -177,6 +175,9 @@ def process_messages(start_index, access_token):
     if not got_messages:
         return start_index
     
+    if not messages:
+        logger.info('No unread messages.')
+
     stop_index = start_index
 
     for message in messages:
@@ -187,7 +188,7 @@ def process_messages(start_index, access_token):
         if forward_message(message['id'], forward_name, forward_email, access_token):
             mark_message_as_read(message['id'], access_token)
             stop_index = (stop_index + 1) % len(settings.FORWARD_TO)
-
+            
         sleep(0.25)
 
     return stop_index
@@ -221,11 +222,11 @@ if __name__ == "__main__":
             
             if not got_token: 
                 exit()
-        
+
         logger.info('Checking messages...')
         
         start_index = load_index()
-        stop_index = process_messages(start_index, access_token)
+        stop_index = check_messages(start_index, access_token)
         store_index(stop_index)
 
         sleep(settings.POLL_INTERVAL * 60)
