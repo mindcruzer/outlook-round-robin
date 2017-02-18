@@ -191,7 +191,7 @@ def test_load_messages_error():
 @patch('outlook_round_robin.mark_message_as_read')
 @patch('outlook_round_robin.forward_message')
 @patch('outlook_round_robin.load_messages')
-def test_process_messages(load_mock, forward_mock, mark_mock, settings_mock):
+def test_check_messages(load_mock, forward_mock, mark_mock, settings_mock):
     """
     Messages should be forwarded evenly across recipients.
     """
@@ -223,7 +223,7 @@ def test_process_messages(load_mock, forward_mock, mark_mock, settings_mock):
 @patch('outlook_round_robin.mark_message_as_read')
 @patch('outlook_round_robin.forward_message')
 @patch('outlook_round_robin.load_messages')
-def test_process_messages_error_loading_messages(load_mock, forward_mock, mark_mock, settings_mock):
+def test_check_messages_error_loading_messages(load_mock, forward_mock, mark_mock, settings_mock):
     """
     Nothing should be done.
     """
@@ -246,7 +246,7 @@ def test_process_messages_error_loading_messages(load_mock, forward_mock, mark_m
 @patch('outlook_round_robin.mark_message_as_read')
 @patch('outlook_round_robin.forward_message')
 @patch('outlook_round_robin.load_messages')
-def test_process_messages_forward_error(load_mock, forward_mock, mark_mock, settings_mock):
+def test_check_messages_forward_error(load_mock, forward_mock, mark_mock, settings_mock):
     """
     If forwarding a message fails, it should not get marked as read.
     """

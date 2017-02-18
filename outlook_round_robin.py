@@ -1,8 +1,8 @@
 """
 Outlook Round-Robin
 ------------
-Watches a folder in a user's mailbox for messages. Messages are 
-forwarded to a list of recipients in a round-robin fashion.
+Watches a folder in a user's mailbox for unread messages. When it finds some, 
+messages are forwarded to a list of recipients in a round-robin fashion.
 """
 from datetime import datetime, timedelta
 from time import sleep
@@ -33,7 +33,7 @@ class MSGraphAuth(requests.auth.AuthBase):
 
 def store_index(index):
     """
-    Stores an integer in the file at `DATA_FILE_PATH`.
+    Stores an integer in the file at `INDEX_FILE_PATH`.
     """
     try:
         with open(settings.INDEX_FILE_PATH, 'w') as data_file:
@@ -44,7 +44,7 @@ def store_index(index):
 
 def load_index():
     """
-    Retrieves an integer from the file at `DATA_FILE_PATH`.
+    Retrieves an integer from the file at `INDEX_FILE_PATH`.
 
     Returns the value in the file, if the file is read successfully; 0 otherwise.
     """
