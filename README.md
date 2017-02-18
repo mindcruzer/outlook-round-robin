@@ -48,7 +48,7 @@ if forward_message(message['id'], forward_name, forward_email, access_token):
 ```
 
 ... and comment them out. Run the script, view the log output to make sure everything looks good, then uncomment and do it live. 
-That being said, this script doesn't do anything descructive, so don't be too paranoid.
+That being said, this script doesn't do anything destructive, so don't be too paranoid.
 
 ## Test
 
@@ -88,7 +88,8 @@ $ systemd daemon-reload
 $ systemd restart outlook_round_robin.service
 ```
 
-I also integrated the log files with CloudWatch to notify me of errors, but I'm too lazy to write about it. I'm sure you can figure it out.
+Another thing you'll probably want to do is get notified when errors occur. You can do this by adding a second [log handler that emails you](https://docs.python.org/3/library/logging.handlers.html#smtphandler)
+log messages. Alternatively, you could push the logs to CloudWatch, then configure alerts there.
 
 ## Notes
 - You do *not* want an unauthorized person getting access to `CLIENT_ID` and `CLIENT_SECERET`, so secure your server.
