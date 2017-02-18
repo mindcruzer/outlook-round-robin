@@ -207,7 +207,7 @@ if __name__ == "__main__":
     else:
         log_handler = logging.StreamHandler(stream=sys.stdout)
         
-    log_formatter = logging.Formatter(settings.LOG_FORMAT)
+    log_formatter = logging.Formatter(settings.LOG_FORMAT, settings.LOG_DATETIME_FORMAT)
     log_handler.setLevel(getattr(logging, settings.LOG_LEVEL.upper()))
     log_handler.setFormatter(log_formatter)
     logger.addHandler(log_handler)

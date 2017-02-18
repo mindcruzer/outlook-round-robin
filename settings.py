@@ -54,5 +54,6 @@ LOG_FILE_PATH = None
 LOG_BACKUPS = 14
 
 LOG_LEVEL = 'INFO'
-LOG_FORMAT = '%(asctime)s|%(levelname)s|%(message)s'
+LOG_FORMAT = '%(asctime)s %(levelname)s %(message)s'
+LOG_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
