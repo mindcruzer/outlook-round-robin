@@ -93,4 +93,4 @@ log messages. Alternatively, you could push the logs to CloudWatch, then configu
 
 ## Notes
 - You do *not* want an unauthorized person getting access to `CLIENT_ID` and `CLIENT_SECERET`, so secure your server.
-- You probably don't run more than one instance of this script on a mailbox folder.
+- Don't run more than one instance of this script on a mailbox folder.
