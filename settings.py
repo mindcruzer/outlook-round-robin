@@ -36,7 +36,7 @@ AUTO_REPLY = True
 #
 AUTO_REPLY_SUBJECT = 'Your message has been received.'
 
-# Content of auto reply message.
+# Content of auto-reply message.
 #
 AUTO_REPLY_BODY =\
 """
