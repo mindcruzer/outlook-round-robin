@@ -28,6 +28,26 @@ FORWARD_TO = [
     ('Zoidberg', 'zoidberg@planetexpress.com'),
 ]
 
+# Enable auto-reply to messages.
+#
+AUTO_REPLY = True
+
+# Subject of auto-reply message.
+#
+AUTO_REPLY_SUBJECT = 'Your message has been received.'
+
+# Content of auto reply message.
+#
+AUTO_REPLY_BODY =\
+"""
+Hello,
+
+Thank you for your email,
+Planet Express Crew
+
+### This is an automated reply ###
+"""
+
 # How many unread messages to load from `WATCH_FOLDER` each time it is checked. Set this 
 # to something reasonably high so that no messages are skipped.
 # 
@@ -56,4 +76,3 @@ LOG_BACKUPS = 14
 LOG_LEVEL = 'INFO'
 LOG_FORMAT = '%(asctime)s %(levelname)s %(message)s'
 LOG_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
-

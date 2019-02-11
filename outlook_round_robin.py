@@ -132,6 +132,40 @@ def forward_message(message_id, recipient_name, recipient_email, access_token):
         return False
 
 
+def send_reply(recipient_email, access_token):
+    """
+    Sends the auto-reply message to a recipient.
+
+    Returns True on success; False otherwise.
+    """
+    endpoint = API_ENDPOINT + '/users/{}/sendMail'.format(settings.MAILBOX_USER)
+    response = requests.post(endpoint, json={
+        'message': {
+            'subject': settings.AUTO_REPLY_SUBJECT,
+            'body': {
+                'contentType': 'text',
+                'content': settings.AUTO_REPLY_BODY
+            },
+            'toRecipients': [
+                {
+                    'emailAddress': {
+                        'address': recipient_email
+                    }
+                }
+            ]
+        },
+        'saveToSentItems': 'true'
+    }, auth=MSGraphAuth(access_token))
+
+    if response.status_code == 202:
+        logger.debug('Reply message send to {}'.format(recipient_email))
+        return True
+    else:
+        data = response.json()
+        logger.error('Error sending reply message to {}: {}'.format(recipient_email, data['error']['message']))
+        return False
+
+
 def load_messages(access_token):
     """
     Loads unread messages from the mailbox folder. Note that only the message `id` and 
@@ -149,7 +183,7 @@ def load_messages(access_token):
     response = requests.get(endpoint, params={
         '$filter': 'isRead eq false',
         '$top': settings.LOAD_MESSAGE_COUNT,
-        '$select':  'id,subject'
+        '$select':  'id,subject,from'
     }, auth=MSGraphAuth(access_token)) 
 
     data = response.json()
@@ -182,13 +216,21 @@ def check_messages(start_index, access_token):
 
     for message in messages:
         forward_name, forward_email = settings.FORWARD_TO[stop_index]
-            
+
+        try:
+            sender_email = message['from']['emailAddress']['address']
+        except KeyError:
+            sender_email = None
+
         logger.info('Processing message for {}: {}'.format(forward_email, message['subject']))
 
         if forward_message(message['id'], forward_name, forward_email, access_token):
             mark_message_as_read(message['id'], access_token)
             stop_index = (stop_index + 1) % len(settings.FORWARD_TO)
-            
+
+            if settings.AUTO_REPLY and sender_email is not None:
+                send_reply(sender_email, access_token)
+
         sleep(0.25)
 
     return stop_index
@@ -224,7 +266,7 @@ if __name__ == "__main__":
                 exit()
 
         logger.info('Checking messages...')
-        
+
         start_index = load_index()
         stop_index = check_messages(start_index, access_token)
         store_index(stop_index)
