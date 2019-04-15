@@ -228,7 +228,7 @@ def check_messages(start_index, access_token):
             mark_message_as_read(message['id'], access_token)
             stop_index = (stop_index + 1) % len(settings.FORWARD_TO)
 
-            if settings.AUTO_REPLY and sender_email is not None:
+            if settings.AUTO_REPLY and (sender_email is not None) and (sender_email not in settings.AUTO_REPLY_EXCLUSIONS):
                 send_reply(sender_email, access_token)
 
         sleep(0.25)

@@ -32,6 +32,11 @@ FORWARD_TO = [
 #
 AUTO_REPLY = True
 
+# Sender email addresses that will not be sent an auto-reply. You might want to use this 
+# if someone you reply to will also auto reply, and you end up in an infinite loop.
+#
+AUTO_REPLY_EXCLUSIONS = []
+
 # Subject of auto-reply message.
 #
 AUTO_REPLY_SUBJECT = 'Your message has been received.'
