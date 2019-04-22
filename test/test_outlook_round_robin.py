@@ -21,7 +21,7 @@ from outlook_round_robin import (
 
 MESSAGES_RESPONSE = {'value': [
     {'id': '1', 'subject': 'What\'s the matter? Ya scared?!', 'from': {'emailAddress': {'address': 'roberto@planetexpress.com'}}},
-    {'id': '2', 'subject': 'What if... That thing I said', 'from':{'emailAddress': {'address': 'fry@planetexpress.com'}}},
+    {'id': '2', 'subject': 'What if... That thing I said', 'from':{'emailAddress': {'address': 'Fry@planetexpress.com'}}},
     {'id': '3', 'subject': 'Good news everyone!', 'from': {'emailAddress': {'address': 'professor@planetexpress.com'}}},
 ]}
 
@@ -249,7 +249,7 @@ def test_check_messages(load_mock, forward_mock, mark_mock, reply_mock, settings
     ])
     reply_mock.assert_has_calls([
         call('roberto@planetexpress.com', 'access_token'),
-        call('fry@planetexpress.com', 'access_token'),
+        call('Fry@planetexpress.com', 'access_token'),
         call('professor@planetexpress.com', 'access_token'),
     ])
 
@@ -435,6 +435,6 @@ def test_check_messages__auto_reply_error(load_mock, forward_mock, mark_mock, re
     ])
     reply_mock.assert_has_calls([
         call('roberto@planetexpress.com', 'access_token'),
-        call('fry@planetexpress.com', 'access_token'),
+        call('Fry@planetexpress.com', 'access_token'),
         call('professor@planetexpress.com', 'access_token'),
     ])
