@@ -11,11 +11,6 @@ some, it forwards them, round-robin, to a list of recipients. Once it has forwar
 as *read*. Take note of that last part. If you go into the mailbox and start clicking around new messages, effectively 
 marking them as read, the script will not forward them. 
 
-## Y tho?
-Well, I have a client that uses a third-party service which reports customer orders to them via email, but the problem is all the 
-orders go to one mailbox, and volume is fairly high. Rather than paying someone to distribute the emails among a set of `n` employees, 
-or worse, having one person process all those orders, they explained their predicament to me and I made them this script. 
-
 ## Setup
 This uses the Microsoft Graph REST API to access the contents of a user's mailbox. For authentication, the 
 original Azure Active Directory authentication endpoint is used, which means this only works with work and 
